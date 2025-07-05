@@ -4,6 +4,7 @@ Django==5.2.4
 django-filter==25.1
 djangorestframework==3.16.0
 drf-spectacular==0.28.0
+drf-spectacular-sidecar==2025.7.1
 factory_boy==3.3.3
 Faker==37.4.0
 inflection==0.5.1

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,14 +39,50 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
-    'api_v1'
+    'rest_framework.authtoken',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
+    'api_v1',
 ]
 
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'TEST_REQUEST_RENDERER_CLASSES': [
+        'rest_framework.renderers.MultiPartRenderer',
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Oficina Python Norte',
+    'DESCRIPTION': 'API de exemplo para oficina de backend na Python Norte 25',
+    'VERSION': 'v1',
+    'OPERATION_ID_METHOD_POSITION': 'PRE',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PUBLIC': True,
+    'SCHEMA_PATH_PREFIX': 'v1',
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    "SWAGGER_UI_SETTINGS": {
+        "displayOperationId": True,
+        "persistAuthorization": True,
+        "filter": True,
+    },
+    'REDOC_DIST': 'SIDECAR',
+
+
 }
 
 MIDDLEWARE = [
@@ -125,7 +161,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
